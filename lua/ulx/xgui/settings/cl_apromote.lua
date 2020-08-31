@@ -4,9 +4,9 @@
 -- Version: "2.0 Beta"         --
 -- Date:    "01/20/2015"       --
 ---------------------------------
-
+--[[ TODO: Fix cfc_time so we can enable this line
 if ULib==nil or GetConVarString("utime_enable")=="" then print("WARNING: Missing dependancy UTime/ULX/ULib APromote is now inactive.") return end
-
+]]
 local APromote = {};
 local panel = xlib.makepanel{ parent=xgui.null }
 xgui.prepareDataType( "AP_SendData", APromote)
