@@ -1,11 +1,11 @@
 ------------------------------
-// APromoteGUI by Lead4u    //
-// Steam: Lead4u2           //
-// Version: 2.1             //
-// Date: 03-11-2015         //
-// If your looking in here  //
-// feel free to send me a   //
-// message about any issues //
+-- APromoteGUI by Lead4u    //
+-- Steam: Lead4u2           //
+-- Version: 2.1             //
+-- Date: 03-11-2015         //
+-- If your looking in here  //
+-- feel free to send me a   //
+-- message about any issues //
 ------------------------------
 
 --[[ TODO: Fix cfc_time so that we can enable this line
@@ -29,15 +29,14 @@ local grp = {} APromote["grp"] = grp
 
 
 local function APUpdateGroups()
-	//for added groups
 		for k, v in pairs(ULib.ucl.groups) do
-			if ( APromote["grp"][k] == nil and k != "user") then
+			if ( APromote["grp"][k] == nil and k ~= "user") then
 				print("Added " .. k .. " to APromote.")
 				APromote["grp"][k] = -1
 			end
 		end
 		for k, v in pairs(APromote["grp"]) do
-			if ( k != nil and !ULib.ucl.groups[k]) or k == "user" then
+			if ( k ~= nil and not ULib.ucl.groups[k]) or k == "user" then
 				print("Removed " .. k .. " from APromote.")
 				APromote["grp"][k] = nil
 			end
@@ -49,8 +48,8 @@ end
 local function loadAP()
 	xgui.addDataType( "AP_SendData", function() return APromote["grp"] end, "apromote_settings", 0, 0 )
 	
-// File Stuffs
-	if (!file.Exists("apromote/settings.txt", "DATA")) then
+-- File Stuffs
+	if (not file.Exists("apromote/settings.txt", "DATA")) then
 		for k, v in pairs(ULib.ucl.groups) do
 			APromote["grp"][k] = -1
 		end
@@ -64,13 +63,13 @@ local function loadAP()
 	else 
 		APromote = notglonbecausepeoplebitch.decode(file.Read( "apromote/settings.txt" ))
 	end
-// ConVars
+-- ConVars
 	ULib.replicatedWritableCvar("ap_enabled","rep_ap_enabled", APromote["set"]["ap_enabled"],false,false,"apromote_settings")
 	ULib.replicatedWritableCvar("ap_snd_enabled","rep_ap_snd_enabled",APromote["set"]["ap_snd_enabled"] ,false,false,"apromote_settings")
 	ULib.replicatedWritableCvar("ap_snd_scope","rep_ap_snd_scope",APromote["set"]["ap_snd_scope"] ,false,false,"apromote_settings")
 	ULib.replicatedWritableCvar("ap_effect_enabled","rep_ap_effect_enabled",APromote["set"]["ap_effect_enabled"] ,false,false,"apromote_settings")
 	ULib.replicatedWritableCvar("ap_auto_demote","rep_ap_auto_demote",APromote["set"]["ap_auto_demote"] ,false,false,"apromote_settings")
-// Data and Hook Add	
+-- Data and Hook Add	
 	xgui.sendDataTable( {}, "AP_SendData" )
 	hook.Add( "UCLChanged", "doApUpdateSV", APUpdateGroups )
 end
@@ -120,7 +119,7 @@ end)
  
 local function checkPlayer( ply ) 
 local plyhours = tonumber(math.floor((ply:GetUTime() + CurTime() - ply:GetUTimeStart())/60/60))
-local usrgrp = ply:GetNWString("usergroup")
+local usrgrp = ply:GetUserGroup()
 local Rank = ""
 local Hours = 0
 
@@ -132,9 +131,9 @@ local Hours = 0
 			end
 		end
 	end
-	if (!ply:IsUserGroup(Rank) and Rank != "") then
-		if (tonumber(APromote["grp"][usrgrp]) != -1) then
-			if (( GetConVarNumber("ap_auto_demote") == 0) and APromote["grp"][usrgrp] != nil and Hours < APromote["grp"][usrgrp]) then
+	if (not ply:IsUserGroup(Rank) and Rank ~= "") then
+		if (tonumber(APromote["grp"][usrgrp]) ~= -1) then
+			if (( GetConVarNumber("ap_auto_demote") == 0) and APromote["grp"][usrgrp] ~= nil and Hours < APromote["grp"][usrgrp]) then
 				return;
 			else
 				if ( ply:IsConnected() ) then 
@@ -147,9 +146,9 @@ local Hours = 0
 end
 
 timer.Create("doAPUpdateTimer",10,0, function()
-if( GetConVarNumber( "ap_enabled" ) != 1) then return end
+if( GetConVarNumber( "ap_enabled" ) ~= 1) then return end
 	for k, v in pairs(player.GetAll()) do
-		if (v:IsPlayer() and v:IsValid() and !v:IsBot()) then
+		if (v:IsPlayer() and v:IsValid() and not v:IsBot()) then
 			ULib.queueFunctionCall(	checkPlayer, v)
 		end
 	end
