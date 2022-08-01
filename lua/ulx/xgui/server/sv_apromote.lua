@@ -137,7 +137,7 @@ local Hours = 0
 				return;
 			else
 				if ( ply:IsConnected() ) then 
-					RunConsoleCommand("ulx", "adduser" , ply:Nick() , Rank)
+					RunConsoleCommand("ulx", "adduser" , "$" .. ply:SteamID(), Rank)
 					PlayRankSound( ply );
 				end
 			end
