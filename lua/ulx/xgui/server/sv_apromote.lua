@@ -15,7 +15,7 @@ resource.AddFile("materials/gui/silkicons/cog.vmt")
 resource.AddFile("materials/gui/silkicons/cog.vtf")
 ULib.ucl.registerAccess( "apromote_settings", "superadmin", "Allows managing all settings related to APromote.", "XGUI" )
 
-notglonbecausepeoplebitch = {}
+local notglonbecausepeoplebitch = {}
 notglonbecausepeoplebitch.encode = function(what)
 	return util.TableToJSON(what)
 end
