@@ -11,6 +11,8 @@
 --[[ TODO: Fix cfc_time so that we can enable this line
 if ULib==nil or GetConVarString("utime_welcome")== "" then print("WARNING: Missing dependancy UTime/ULX/ULib APromote is now inactive.") return end
 ]]
+util.AddNetworkString( "APromoteShinys" )
+
 resource.AddFile("materials/gui/silkicons/cog.vmt")
 resource.AddFile("materials/gui/silkicons/cog.vtf")
 ULib.ucl.registerAccess( "apromote_settings", "superadmin", "Allows managing all settings related to APromote.", "XGUI" )
@@ -81,21 +83,17 @@ local function cVarChange( sv_cvar, cl_cvar, ply, old_val, new_val )
 	end
 end
 
+
 local function PlayRankSound( ply )
-	if ( GetConVarNumber( "ap_effect_enabled" ) == 1 ) then
-		umsg.Start("doApShinys")
-			umsg.Entity( ply )
-		umsg.End()
+	net.Start( "APromoteShinys" )
+	net.WriteBool( GetConVarNumber( "ap_snd_enabled" ) == 1 )
+	net.WriteBool( GetConVarNumber( "ap_effect_enabled" ) == 1 )
+
+	if GetConVarNumber( "ap_effect_enabled" ) == 1 then
+		net.WritePlayer( ply )
 	end
-	if ( GetConVarNumber( "ap_snd_enabled" ) == 1) then
-		if ( GetConVarNumber( "ap_snd_scope" ) == 1 ) then
-			for k, v in pairs(player.GetAll()) do
-				v:SendLua("surface.PlaySound( \"/garrysmod/save_load1.wav\" )")
-			end
-		elseif ( GetConVarNumber( "ap_snd_scope" ) == 0) then
-			ply:SendLua("surface.PlaySound( \"/garrysmod/save_load1.wav\" )")
-		end
-	end
+
+	net.Broadcast()
 end
 	
 local function isValidCommand( command, compare )
