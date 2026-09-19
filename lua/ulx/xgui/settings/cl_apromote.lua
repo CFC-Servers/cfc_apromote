@@ -88,6 +88,14 @@ local function doApShinys( um )
 	em:Finish()
 end
 
-usermessage.Hook("doApShinys", doApShinys)
+net.Receive( "APromoteShinys", function()
+	doApShinys( net.ReadPlayer() )
+
+	-- play sound
+	if net.ReadBool() then
+		surface.PlaySound( "/garrysmod/save_load1.wav" )
+	end
+end )
+
 xgui.hookEvent( "AP_SendData", "process", doApUpdate )
 xgui.addSettingModule( "APromote", panel, "icon16/cog.png", "apromote_settings" )
