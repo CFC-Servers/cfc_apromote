@@ -85,11 +85,14 @@ end
 
 
 local function PlayRankSound( ply )
-	if not GetConVarNumber( "ap_effect_enabled" ) == 1 then return end
-
 	net.Start( "APromoteShinys" )
-	net.WritePlayer( ply )
 	net.WriteBool( GetConVarNumber( "ap_snd_enabled" ) == 1 )
+	net.WriteBool( GetConVarNumber( "ap_effect_enabled" ) == 1 )
+
+	if GetConVarNumber( "ap_effect_enabled" ) == 1 then
+		net.WritePlayer( ply )
+	end
+
 	net.Broadcast()
 end
 	

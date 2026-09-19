@@ -89,11 +89,13 @@ local function doApShinys( um )
 end
 
 net.Receive( "APromoteShinys", function()
-	doApShinys( net.ReadPlayer() )
-
 	-- play sound
 	if net.ReadBool() then
 		surface.PlaySound( "/garrysmod/save_load1.wav" )
+	end
+
+	if net.ReadBool() then
+		doApShinys( net.ReadPlayer() )
 	end
 end )
 
